@@ -1,10 +1,12 @@
 import { useQuery, type QueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import fetchAPI from "../utils/api";
+import Layout from "../components/Layout";
+import Card from "../components/Card";
+import { fetchPosts, type Post } from "../services/posts";
 
 const postsQuery = () => ({
   queryKey: ["posts", "all"],
-  queryFn: () => fetchAPI("https://jsonplaceholder.typicode.com/posts"),
+  queryFn: fetchPosts,
 });
 
 export const loader = (queryClient: QueryClient) => async () => {
@@ -30,13 +32,21 @@ export const loader = (queryClient: QueryClient) => async () => {
 };
 
 const Posts = () => {
-  const { data } = useQuery(postsQuery());
-  console.log("POSTS:", data);
+  const { data: posts } = useQuery(postsQuery());
+  console.log("POSTS:", posts);
 
   return (
-    <div>
-      <Link to="/">Home</Link>
-    </div>
+    <Layout title="Posts">
+      {posts?.map(({ id, userId, title, body }) => (
+        <Card
+          key={`${id}${userId}`}
+          id={id}
+          userId={userId}
+          title={title}
+          body={body}
+        />
+      ))}
+    </Layout>
   );
 };
 

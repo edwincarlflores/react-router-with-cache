@@ -11,7 +11,7 @@ export type Post = {
 
 type FetchPosts = () => Promise<Post[]>;
 
-type FetchPostById = (id: number) => Promise<Post>;
+type FetchPostById = (id: string) => Promise<Post>;
 
 export const fetchPosts: FetchPosts = () => fetchAPI(`${BASE_URL}/posts`);
 

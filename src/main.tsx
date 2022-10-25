@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App";
 import Error from "./components/Error";
 import Posts, { loader as postsLoader } from "./routes/Posts";
+import Post, { loader as postLoader } from "./routes/Post";
 import "./index.css";
 
 const queryClient = new QueryClient({
@@ -27,6 +28,12 @@ const router = createBrowserRouter([
     element: <Posts />,
     errorElement: <Error />,
     loader: postsLoader(queryClient),
+  },
+  {
+    path: "posts/:postId",
+    element: <Post />,
+    errorElement: <Error />,
+    loader: postLoader(queryClient),
   },
 ]);
 

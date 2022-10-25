@@ -38,13 +38,9 @@ const Posts = () => {
   return (
     <Layout title="Posts">
       {posts?.map(({ id, userId, title, body }) => (
-        <Card
-          key={`${id}${userId}`}
-          id={id}
-          userId={userId}
-          title={title}
-          body={body}
-        />
+        <Link to={`/posts/${id}`} key={`${id}${userId}`}>
+          <Card id={id} userId={userId} title={title} body={body} />
+        </Link>
       ))}
     </Layout>
   );

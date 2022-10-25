@@ -1,4 +1,4 @@
-import fetchAPI from "../utils/api";
+import { fetchAPI } from "../utils/api";
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
 
@@ -9,11 +9,7 @@ export type Post = {
   body: string;
 };
 
-type FetchPosts = () => Promise<Post[]>;
+export const fetchPosts = (): Promise<Post[]> => fetchAPI(`${BASE_URL}/posts`);
 
-type FetchPostById = (id: string) => Promise<Post>;
-
-export const fetchPosts: FetchPosts = () => fetchAPI(`${BASE_URL}/posts`);
-
-export const fetchPostById: FetchPostById = (id) =>
+export const fetchPostById = (id: string): Promise<Post> =>
   fetchAPI(`${BASE_URL}/posts/${id}`);

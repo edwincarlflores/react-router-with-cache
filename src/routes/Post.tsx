@@ -2,31 +2,18 @@ import { useQuery, type QueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import Card from "../components/Card";
-import { fetchPostById } from "../services/posts";
+import { fetchPostById, type Post as TPost } from "../services/posts";
+import { getLoaderData, type Query } from "../utils/api";
 
-const postQuery = (postId: string) => ({
+const postQuery = (postId: string): Query<TPost> => ({
   queryKey: ["post", postId],
   queryFn: () => fetchPostById(postId),
 });
 
 export const loader =
   (queryClient: QueryClient) =>
-  async ({ params }: any) => {
-    console.log("PARAMS", params);
-    const { queryKey, queryFn } = postQuery(params.postId);
-
-    // Retrieve data from the cache
-    const cachedData = queryClient.getQueryData(queryKey);
-
-    // Return the data from the cache if it exists
-    if (cachedData) {
-      console.log("Loading data from cache...");
-      return cachedData;
-    }
-
-    // Initiate a fetch if there are no data in the cache
-    console.log("Initiating fetch...");
-    return await queryClient.fetchQuery(queryKey, queryFn);
+  ({ params }: any) => {
+    return getLoaderData(queryClient, postQuery(params.postId));
   };
 
 const Post = () => {
